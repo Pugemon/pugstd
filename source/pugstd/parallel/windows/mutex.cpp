@@ -2,66 +2,64 @@
 // Created by Pugemon on 18.03.2025.
 //
 
-#include <windows.h>
 #include "../mutex.hpp"
-
-#define OBJ_TO_CS(obj) static_cast<CRITICAL_SECTION*>(obj)
 
 namespace pugstd::internal
 {
 
 void* mutex_init()
 {
-  auto* CS = new CRITICAL_SECTION();
-  InitializeCriticalSection(CS);
-  return CS;
+  std::mutex* p_mutex = new std::mutex;
+  return p_mutex;
 }
 
 void mutex_free(void* obj)
 {
-  auto* cs = OBJ_TO_CS(obj);
-  DeleteCriticalSection(cs);
-  delete cs;
+  auto* p_mutex = static_cast<std::mutex*>(obj);
+  p_mutex->unlock();
+  delete p_mutex;
 }
 
 void mutex_lock(void* obj)
 {
-  EnterCriticalSection(OBJ_TO_CS(obj));
+  static_cast<std::mutex*>(obj)->lock();
 }
 
 bool mutex_try_lock(void* obj)
 {
-  return TryEnterCriticalSection(OBJ_TO_CS(obj));
+  return static_cast<std::mutex*>(obj)->try_lock();
 }
 
 void mutex_unlock(void* obj)
 {
-  LeaveCriticalSection(OBJ_TO_CS(obj));
+  static_cast<std::mutex*>(obj)->unlock();
 }
 
 void* recursive_mutex_init()
 {
-  return mutex_init();
+  return new std::recursive_mutex;
 }
 
 void recursive_mutex_free(void* obj)
 {
-  mutex_free(obj);
+  auto* p_rmutex = static_cast<std::recursive_mutex*>(obj);
+  p_rmutex->unlock();
+  delete p_rmutex;
 }
 
 void recursive_mutex_lock(void* obj)
 {
-  mutex_lock(obj);
+  static_cast<std::recursive_mutex*>(obj)->lock();
 }
 
 bool recursive_mutex_try_lock(void* obj)
 {
-  return mutex_try_lock(obj);
+  return static_cast<std::recursive_mutex*>(obj)->try_lock();
 }
 
 void recursive_mutex_unlock(void* obj)
 {
-  mutex_unlock(obj);
+  static_cast<std::recursive_mutex*>(obj)->unlock();
 }
 
 }  // namespace pugstd::internal
