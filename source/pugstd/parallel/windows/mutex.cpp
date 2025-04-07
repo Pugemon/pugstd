@@ -3,6 +3,7 @@
 //
 
 #include "../mutex.hpp"
+#include <windows.h>
 
 namespace pugstd::internal
 {

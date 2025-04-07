@@ -20,6 +20,7 @@ void* mutex_init()
 
 void mutex_free(void* obj)
 {
+  mutex_unlock(obj);
   delete OBJ_TO_LIGHTLOCK(obj);
 }
 
@@ -47,6 +48,7 @@ void* recursive_mutex_init()
 
 void recursive_mutex_free(void* obj)
 {
+  recursive_mutex_unlock(obj);
   delete OBJ_TO_RECURSIVELOCK(obj);
 }
 

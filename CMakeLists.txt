@@ -29,6 +29,8 @@ add_library(pugstd_pugstd
         source/pugstd.cpp
         source/pugstd/parallel/mutex.cpp
         source/pugstd/parallel/${PLATFORM_DIR}/mutex.cpp
+        source/pugstd/chrono/cycle_counter.cpp
+        source/pugstd/chrono/${PLATFORM_DIR}/cycle_counter.cpp
 )
 add_library(pugstd::pugstd ALIAS pugstd_pugstd)
 
