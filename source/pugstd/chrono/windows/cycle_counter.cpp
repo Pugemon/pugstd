@@ -3,18 +3,17 @@
 //
 
 #include "../cycle_counter.hpp"
-#include <windows.h>
+
+#include <chrono>
 
 namespace pugstd::chrono::internal
 {
 
 auto get_cpu_ticks() noexcept -> uint64_t
 {
-  LARGE_INTEGER freq;
-  LARGE_INTEGER count;
-  QueryPerformanceFrequency(&freq);
-  QueryPerformanceCounter(&count);
-  return static_cast<uint64_t>(count.QuadPart / freq.QuadPart);
+  using namespace std::chrono;
+  return duration_cast<nanoseconds>(
+      high_resolution_clock::now().time_since_epoch()).count();
 }
 
 } // namespace pugstd::chrono::internal
