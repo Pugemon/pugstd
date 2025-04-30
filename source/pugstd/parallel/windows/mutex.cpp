@@ -17,7 +17,6 @@ void* mutex_init()
 void mutex_free(void* obj)
 {
   auto* p_mutex = static_cast<std::mutex*>(obj);
-  p_mutex->unlock();
   delete p_mutex;
 }
 
@@ -44,7 +43,6 @@ void* recursive_mutex_init()
 void recursive_mutex_free(void* obj)
 {
   auto* p_rmutex = static_cast<std::recursive_mutex*>(obj);
-  p_rmutex->unlock();
   delete p_rmutex;
 }
 
